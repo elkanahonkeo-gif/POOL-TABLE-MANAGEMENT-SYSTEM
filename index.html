@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cue House | Pool Table Management System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- LOGIN -->
+  <section class="screen frame active" id="login">
+    <div class="login-hero">
+      <div class="brand"><div class="logo">8</div><div><div class="brand-name">Cue House</div><div class="brand-sub">Table Management</div></div></div>
+      <div>
+        <div class="hero-kicker">Built for the way you play</div>
+        <div class="hero-title">Every table.<br>Every session.<br>Under control.</div>
+        <p class="hero-copy">A smoother shift starts here. Manage your floor, keep play moving, and make every visit count.</p>
+      </div>
+      <div class="hero-foot"><span class="dot"></span> ELKOZZ@RESTAURANTS · Staff workspace</div>
+    </div>
+    <div class="login-panel">
+      <div class="login-card">
+        <div class="login-tag"><span>Pool Table Management System</span><span class="secure">Secure login</span></div>
+        <h2>Welcome back.</h2>
+        <p class="lead">Log in to your workspace and get your floor ready for a great day of play.</p>
+        <form onsubmit="event.preventDefault(); doLogin();">
+          <div class="field">
+            <label for="user">Username</label>
+            <div class="input"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><input id="user" type="text" value="Elikanah" autocomplete="username"></div>
+          </div>
+          <div class="field">
+            <label for="pw">Password</label>
+            <div class="input">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+              <input id="pw" type="password" value="pool2026" autocomplete="current-password">
+              <button type="button" class="toggle-pw" id="togglePw" aria-label="Show password" title="Show password">
+                <svg class="icon" viewBox="0 0 24 24" id="eyeIcon"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="row-between"><label class="check"><input type="checkbox" checked> Remember me</label><a class="link" href="#" onclick="event.preventDefault(); openReset();">Forgot password?</a></div>
+          <button class="btn-primary" type="submit">Log in to workspace</button>
+        </form>
+        <div id="loginErr" style="color:var(--red);font-size:13px;margin-top:14px;display:none"></div>
+        <p class="login-note">Trouble signing in? Ask your shift manager to reset your access.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="screen frame" id="dashboard" data-crumb="Dashboard">
+    <div class="app">
+      <aside class="sidebar" data-sidebar></aside>
+      <div class="main">
+        <header class="topbar" data-topbar></header>
+        <div class="content">
+          <div class="page-head">
+            <div><h1>Good afternoon, <span class="cashier-first">Elikanah</span></h1><p>Here's what's happening at your club today.</p></div>
+            <button class="btn btn-green" data-action="new-session">+ Start new session</button>
+          </div>
+          <div class="stats">
+            <div class="card stat"><div class="stat-top">Total pool tables <span class="stat-ic">▦</span></div><div class="stat-val">12</div><div class="stat-foot">8 standard · 4 premium</div></div>
+            <div class="card stat"><div class="stat-top">Available tables <span class="stat-ic">✓</span></div><div class="stat-val" data-kpi="available">5</div><div class="stat-foot">Ready for a new session</div></div>
+            <div class="card stat"><div class="stat-top">Occupied tables <span class="stat-ic amber">◷</span></div><div class="stat-val" data-kpi="occupied">5</div><div class="stat-foot">Tables in play right now</div></div>
+            <div class="card stat"><div class="stat-top">Reserved tables <span class="stat-ic indigo">▤</span></div><div class="stat-val" data-kpi="reserved">2</div><div class="stat-foot">See Reservations for details</div></div>
+            <div class="card stat"><div class="stat-top">Today's revenue <span class="stat-ic">$</span></div><div class="stat-val" style="font-size:22px">$846.00 <span style="font-size:14px;color:var(--muted)">(KSh 109,134)</span></div><div class="stat-foot"><span class="up">↑ 12.8%</span> vs. yesterday</div></div>
+            <div class="card stat"><div class="stat-top">Active playing sessions <span class="stat-ic">∿</span></div><div class="stat-val" data-kpi="active">5</div><div class="stat-foot">Running now</div></div>
+          </div>
+          <div class="dash-grid">
+            <div class="col">
+              <div class="card panel" style="flex:1.1">
+                <div class="panel-head"><div><h3>Revenue overview</h3><div class="sub">$4,286.00 (KSh 552,894) earned in the last 7 days</div></div>
+                  <select class="select"><option>Last 7 days</option><option>Last 30 days</option></select></div>
+                <div class="chart"><div class="axis"><span>$900</span><span>$600</span><span>$300</span><span>$0</span></div><div class="bars" id="bars"></div></div>
+              </div>
+              <div class="card panel" style="flex:1">
+                <div class="panel-head"><h3>Recent transactions</h3><span class="view-link" data-go="sessions">View all →</span></div>
+                <table>
+                  <thead><tr><th>Customer</th><th>Table</th><th>Amount</th><th>Method</th><th>Time</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td><div class="cust"><span class="av">EC</span>Ethan Clark</div></td><td>04</td><td class="amt">$36.00 <span class="muted" style="font-weight:500">(KSh 4,644)</span></td><td class="muted">Card</td><td class="muted">4:18 PM</td><td><span class="pill">Paid</span></td></tr>
+                    <tr><td><div class="cust"><span class="av">AR</span>Ava Robinson</div></td><td>07</td><td class="amt">$27.00 <span class="muted" style="font-weight:500">(KSh 3,483)</span></td><td class="muted">Cash</td><td class="muted">4:02 PM</td><td><span class="pill">Paid</span></td></tr>
+                    <tr><td><div class="cust"><span class="av">LH</span>Liam Harris</div></td><td>01</td><td class="amt">$45.00 <span class="muted" style="font-weight:500">(KSh 5,805)</span></td><td class="muted">Card</td><td class="muted">3:51 PM</td><td><span class="pill">Paid</span></td></tr>
+                    <tr><td><div class="cust"><span class="av">MA</span>Mia Anderson</div></td><td>09</td><td class="amt">$48.00 <span class="muted" style="font-weight:500">(KSh 6,192)</span></td><td class="muted">Card</td><td class="muted">3:40 PM</td><td><span class="pill">Paid</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card panel" style="flex:0 0 auto">
+                <div class="panel-head"><h3>Live table status</h3><span class="view-link" data-go="tables">View all tables →</span></div>
+                <div class="tbl-status-grid" id="miniGrid"></div>
+                <div class="legend"><span><i style="background:var(--green)"></i>Available</span><span><i style="background:var(--amber)"></i>Occupied</span><span><i style="background:var(--indigo)"></i>Reserved</span></div>
+              </div>
+              <div class="card panel" style="flex:1">
+                <div class="panel-head"><h3>Recent playing sessions</h3><span class="view-link" data-go="sessions">View all →</span></div>
+                <div id="dashSessions"></div>
+              </div>
+            </div>
+          </div>
+          <div class="footnote"><span>All systems online · Last synced just now</span><span>Cue House · ELKOZZ@RESTAURANTS</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POOL TABLES -->
+  <section class="screen frame" id="tables" data-crumb="Pool Tables">
+    <div class="app">
+      <aside class="sidebar" data-sidebar></aside>
+      <div class="main">
+        <header class="topbar" data-topbar></header>
+        <div class="content">
+          <div class="page-head">
+            <div><h1>Pool Tables</h1><p>Your floor at a glance. Start a session and keep the game moving.</p></div>
+            <button class="btn btn-green" data-action="new-res">+ New reservation</button>
+          </div>
+          <div class="toolbar">
+            <div class="tabs">
+              <button class="tab" data-filter="all">All tables <span class="n" data-count="all">12</span></button>
+              <button class="tab" data-filter="available">Available <span class="n" data-count="available">5</span></button>
+              <button class="tab" data-filter="occupied">Occupied <span class="n" data-count="occupied">5</span></button>
+              <button class="tab" data-filter="reserved">Reserved <span class="n" data-count="reserved">2</span></button>
+            </div>
+            <div class="search"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input type="text" id="search" placeholder="Search table or customer"></div>
+          </div>
+          <div class="table-grid" id="tableGrid"></div>
+          <div class="legend-bar">
+            <span id="footCount"></span>
+            <div class="lg"><span><i style="background:var(--green)"></i>Available</span><span><i style="background:var(--amber)"></i>Occupied</span><span><i style="background:var(--indigo)"></i>Reserved</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOMERS -->
+  <section class="screen frame" id="customers" data-crumb="Customers">
+    <div class="app">
+      <aside class="sidebar" data-sidebar></aside>
+      <div class="main">
+        <header class="topbar" data-topbar></header>
+        <div class="content">
+          <div class="page-head">
+            <div><h1>Customers</h1><p>Save customers, then start a session for them in one click.</p></div>
+          </div>
+          <div class="card panel" style="flex:0 0 auto">
+            <div class="add-row">
+              <div class="input"><input id="cName" type="text" placeholder="Customer full name"></div>
+              <div class="input"><input id="cPhone" type="tel" placeholder="Phone number (optional)"></div>
+              <button class="btn btn-green" data-action="add-customer">+ Add customer</button>
+            </div>
+          </div>
+          <div class="toolbar">
+            <div class="search" style="width:340px"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input type="text" id="custSearch" placeholder="Search customer name or phone"></div>
+            <span class="muted" id="custCount"></span>
+          </div>
+          <div class="card panel" style="flex:1;min-height:0">
+            <div class="list-scroll">
+              <table>
+                <thead><tr><th>Customer</th><th>Phone</th><th>Visits</th><th>Total spent</th><th>Last table</th><th></th></tr></thead>
+                <tbody id="custBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYING SESSIONS -->
+  <section class="screen frame" id="sessions" data-crumb="Playing Sessions">
+    <div class="app">
+      <aside class="sidebar" data-sidebar></aside>
+      <div class="main">
+        <header class="topbar" data-topbar></header>
+        <div class="content">
+          <div class="page-head">
+            <div><h1>Playing Sessions</h1><p>Every game in play, and the history of finished sessions.</p></div>
+            <button class="btn btn-green" data-action="new-session">+ Start new session</button>
+          </div>
+          <div class="stats three">
+            <div class="card stat"><div class="stat-top">Sessions in play <span class="stat-ic amber">◷</span></div><div class="stat-val" data-sk="active">0</div><div class="stat-foot">Running now</div></div>
+            <div class="card stat"><div class="stat-top">Revenue today <span class="stat-ic">$</span></div><div class="stat-val" data-sk="revenue">$0.00</div><div class="stat-foot">Finished sessions only</div></div>
+            <div class="card stat"><div class="stat-top">Finished today <span class="stat-ic indigo">✓</span></div><div class="stat-val" data-sk="done">0</div><div class="stat-foot">Completed or ended early</div></div>
+          </div>
+          <div class="toolbar">
+            <div class="tabs">
+              <button class="tab" data-stab="active">In play <span class="n" data-scount="active">0</span></button>
+              <button class="tab" data-stab="history">History <span class="n" data-scount="history">0</span></button>
+            </div>
+          </div>
+          <div class="card panel" style="flex:1;min-height:0">
+            <div class="list-scroll"><table>
+              <thead id="sessHead"></thead>
+              <tbody id="sessBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVATIONS -->
+  <section class="screen frame" id="reservations" data-crumb="Reservations">
+    <div class="app">
+      <aside class="sidebar" data-sidebar></aside>
+      <div class="main">
+        <header class="topbar" data-topbar></header>
+        <div class="content">
+          <div class="page-head">
+            <div><h1>Reservations</h1><p>Book a table ahead of time, then start the session when the guest arrives.</p></div>
+            <button class="btn btn-green" data-action="new-res">+ New reservation</button>
+          </div>
+          <div class="toolbar">
+            <div class="tabs">
+              <button class="tab" data-rf="upcoming">Upcoming <span class="n" data-rcount="upcoming">0</span></button>
+              <button class="tab" data-rf="started">Started <span class="n" data-rcount="started">0</span></button>
+              <button class="tab" data-rf="cancelled">Cancelled <span class="n" data-rcount="cancelled">0</span></button>
+              <button class="tab" data-rf="all">All <span class="n" data-rcount="all">0</span></button>
+            </div>
+          </div>
+          <div class="card panel" style="flex:1;min-height:0">
+            <div class="list-scroll"><table>
+              <thead><tr><th>Customer</th><th>Phone</th><th>Table</th><th>Date &amp; time</th><th>Hours</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+              <tbody id="resBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- PAYMENTS -->
+<section class="screen frame" id="payments" data-crumb="Payments">
+  <div class="app">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar" data-topbar></header>
+      <div class="content">
+        <div class="page-head"><div><h1>Payments</h1><p>Record how each finished session was paid. Amounts show in US dollars and Kenyan Shillings.</p></div></div>
+        <div class="stats three">
+          <div class="card stat"><div class="stat-top">Collected <span class="stat-ic">$</span></div><div class="stat-val" data-pst="paidTotal">$0.00</div><div class="stat-foot" data-pst="paidCount">0 paid</div></div>
+          <div class="card stat"><div class="stat-top">Outstanding <span class="stat-ic amber">!</span></div><div class="stat-val" data-pst="unpaidTotal">$0.00</div><div class="stat-foot" data-pst="unpaidCount">0 unpaid</div></div>
+          <div class="card stat"><div class="stat-top">Collected by method <span class="stat-ic indigo">▤</span></div><div class="stat-val" style="font-size:14px;line-height:1.5" data-pst="methods">—</div><div class="stat-foot">Cash · M-Pesa · Card</div></div>
+        </div>
+        <div class="toolbar">
+          <div class="tabs">
+            <button class="tab" data-ptab="unpaid">Unpaid <span class="n" data-pcount="unpaid">0</span></button>
+            <button class="tab" data-ptab="paid">Paid <span class="n" data-pcount="paid">0</span></button>
+            <button class="tab" data-ptab="all">All <span class="n" data-pcount="all">0</span></button>
+          </div>
+        </div>
+        <div class="card panel" style="flex:1;min-height:0">
+          <div class="list-scroll"><table>
+            <thead><tr><th>Table</th><th>Customer</th><th>Finished</th><th>Hours</th><th>Amount</th><th>Payment</th><th></th></tr></thead>
+            <tbody id="payBody"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAFF MANAGEMENT -->
+<section class="screen frame" id="staff" data-crumb="Staff Management">
+  <div class="app">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar" data-topbar></header>
+      <div class="content">
+        <div class="page-head"><div><h1>Staff Management</h1><p>Add cashiers and managers, and choose who is on duty at the till.</p></div></div>
+        <div class="stats three">
+          <div class="card stat"><div class="stat-top">Total staff <span class="stat-ic">⚇</span></div><div class="stat-val" data-stf="total">1</div><div class="stat-foot">Accounts that can log in</div></div>
+          <div class="card stat"><div class="stat-top">On duty now <span class="stat-ic amber">◉</span></div><div class="stat-val" data-stf="on">Elikanah</div><div class="stat-foot">Person using this till</div></div>
+          <div class="card stat"><div class="stat-top">Managers <span class="stat-ic indigo">★</span></div><div class="stat-val" data-stf="mgr">0</div><div class="stat-foot">Accounts with the manager role</div></div>
+        </div>
+        <div class="card panel" style="flex:0 0 auto">
+          <div class="panel-head"><div><h3>Add a staff member</h3><div class="sub">They can log in with this username and password.</div></div></div>
+          <div class="grid2">
+            <div class="input"><input id="spName" type="text" placeholder="Full name"></div>
+            <div class="input"><input id="spUser" type="text" placeholder="Username" autocomplete="off"></div>
+          </div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="input"><input id="spPass" type="password" placeholder="Password (at least 6 characters)" autocomplete="new-password"></div>
+            <div class="input"><select id="spRole"><option>Cashier</option><option>Manager</option><option>Supervisor</option></select></div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn btn-green" onclick="addStaffPage()">+ Add staff member</button></div>
+        </div>
+        <div class="card panel" style="flex:1;min-height:0">
+          <div class="list-scroll"><table>
+            <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th></th></tr></thead>
+            <tbody id="staffBody"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETTINGS: cashier account -->
+<section class="screen frame" id="settings" data-crumb="Settings">
+  <div class="app">
+    <aside class="sidebar" data-sidebar></aside>
+    <div class="main">
+      <header class="topbar" data-topbar></header>
+      <div class="content">
+        <div class="page-head"><div><h1>Settings</h1><p>Change the cashier's username and password.</p></div></div>
+        <div class="card panel" style="max-width:600px;padding:26px;margin-bottom:16px;border-color:#f1cbc7">
+          <div class="panel-head"><div><h3>Database &amp; saved names</h3><div class="sub">Everything typed in is saved in this browser. Erasing removes all customer names, sessions, reservations and messages, and resets staff to Elikanah.</div></div></div>
+          <div class="sub dbStatus" style="margin-bottom:12px">Connecting to database…</div>
+          <div class="add-row" style="margin-bottom:10px"><div class="input"><input id="erasePw" type="password" placeholder="Enter the password of the person on duty" autocomplete="new-password"></div></div>
+          <div class="add-row"><div class="input"><input id="eraseWord" type="text" placeholder="Type ERASE to confirm" autocomplete="off"></div><button class="btn btn-red" onclick="eraseAll()">Erase all saved names</button></div>
+        </div>
+        <div class="card panel" style="max-width:600px;padding:26px;margin-bottom:16px">
+          <div class="panel-head"><div><h3>Cashier name &amp; staff</h3><div class="sub">Who is on duty at this till. Change the name, add people, or switch at any time.</div></div></div>
+          <div class="add-row"><div class="input"><input id="setName" type="text" placeholder="Full name"></div><button class="btn btn-green" onclick="saveName()">Save name</button></div>
+          <div class="grid2" style="margin-top:12px"><div class="input"><input id="newPerson" type="text" placeholder="New person's full name"></div><div class="input"><input id="newUser" type="text" placeholder="Username" autocomplete="off"></div></div>
+          <div class="add-row" style="margin-top:10px"><div class="input"><input id="newPass" type="password" placeholder="Password (at least 6 characters)"></div><button class="btn btn-ghost" onclick="addStaff()">+ Add person</button></div>
+          <div id="staffList" style="margin-top:10px"></div>
+        </div>
+        <div class="card panel" style="max-width:600px;padding:26px">
+          <div class="panel-head"><div><h3>Cashier account</h3><div class="sub">Used to log in to the Pool Table Management System</div></div></div>
+          <div class="mrow"><label class="lbl" for="setUser">Username</label><div class="input"><input id="setUser" type="text" autocomplete="off"></div></div>
+          <div class="mrow"><label class="lbl" for="setCur">Current password</label><div class="input"><input id="setCur" type="password" placeholder="Enter current password"></div></div>
+          <div class="grid2 mrow">
+            <div><label class="lbl" for="setNew">New password</label><div class="input"><input id="setNew" type="password" placeholder="At least 6 characters"></div></div>
+            <div><label class="lbl" for="setConfirm">Confirm new password</label><div class="input"><input id="setConfirm" type="password"></div></div>
+          </div>
+          <label class="check" style="margin-bottom:14px"><input type="checkbox" onchange="togglePwVis(this.checked, ['setCur','setNew','setConfirm'])"> Show passwords</label>
+          <div id="setErr" style="font-size:13px;min-height:18px;margin-bottom:12px"></div>
+          <div class="m-actions" style="margin-top:0"><button class="btn btn-green" onclick="saveAccount()">Save changes</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Session & reservation form -->
+<div class="overlay" id="modal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="m-head">
+      <div><h3 id="mTitle"></h3><p id="mSub"></p></div>
+      <button class="x" onclick="closeModal()" aria-label="Close">×</button>
+    </div>
+    <div class="mrow">
+      <label class="lbl" for="mTable">Table</label>
+      <div class="input"><select id="mTable"></select></div>
+    </div>
+    <div class="mrow">
+      <label class="lbl" for="mName">Customer name</label>
+      <div class="input">
+        <input id="mName" type="text" placeholder="Type customer name" autocomplete="off">
+        <button class="clear" id="mClear" title="Clear name" aria-label="Clear name">×</button>
+      </div>
+    </div>
+    <div class="mrow">
+      <label class="lbl" for="mPhone">Phone number (receives the end-of-time message)</label>
+      <div class="input"><input id="mPhone" type="tel" placeholder="e.g. +1 555 0100"></div>
+    </div>
+    <div class="grid2 mrow">
+      <div>
+        <label class="lbl" for="mDate">Date &amp; year</label>
+        <div class="input"><input id="mDate" type="date"></div>
+      </div>
+      <div>
+        <label class="lbl" for="mTime">Start time</label>
+        <div class="input"><input id="mTime" type="time"></div>
+      </div>
+    </div>
+    <div class="mrow">
+      <label class="lbl" for="mHours">Time to play (auto-reset when reached)</label>
+      <div class="input"><select id="mHours"></select></div>
+    </div>
+    <div class="summary">
+      <div><span>Ends at</span><b id="mEnd">—</b></div>
+      <div><span>Amount due (USD · KSh)</span><b id="mAmt">—</b></div>
+    </div>
+    <div class="m-actions" id="mActions"></div>
+  </div>
+</div>
+
+<!-- RESET PASSWORD (from login) -->
+<div class="overlay" id="resetModal">
+  <div class="modal" style="width:440px">
+    <div class="m-head"><div><h3>Reset password</h3><p>Enter the cashier username and choose a new password.</p></div><button class="x" onclick="closeReset()" aria-label="Close">×</button></div>
+    <div class="mrow"><label class="lbl" for="rUser">Username</label><div class="input"><input id="rUser" type="text" autocomplete="off"></div></div>
+    <div class="mrow"><label class="lbl" for="rNew">New password</label><div class="input"><input id="rNew" type="password" placeholder="At least 6 characters"></div></div>
+    <div class="mrow"><label class="lbl" for="rConfirm">Confirm new password</label><div class="input"><input id="rConfirm" type="password"></div></div>
+    <label class="check" style="margin-bottom:10px"><input type="checkbox" onchange="togglePwVis(this.checked, ['rNew','rConfirm'])"> Show passwords</label>
+    <div id="rErr" style="font-size:13px;color:var(--red);min-height:18px;margin-bottom:8px"></div>
+    <div class="m-actions" style="margin-top:0"><button class="btn btn-ghost" onclick="closeReset()">Cancel</button><button class="btn btn-green" onclick="saveReset()">Reset password</button></div>
+  </div>
+</div>
+
+<!-- Customer messages -->
+<div class="overlay" id="msgPanel" onclick="if(event.target.id==='msgPanel')closeMsgs()">
+  <div class="modal" style="width:520px">
+    <div class="m-head"><div><h3>Customer messages</h3><p>Sent automatically when a customer's time ends</p></div><button class="x" onclick="closeMsgs()" aria-label="Close">×</button></div>
+    <div id="msgList" style="display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<div class="owner-panel" id="ownerPanel" style="display:none"></div>
+
+<div class="toast" id="toast">
+  <div class="bell-ic"><svg class="icon" viewBox="0 0 24 24" style="color:#fff"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg></div>
+  <div><b id="toastTitle">Notice</b><span id="toastText"></span></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
